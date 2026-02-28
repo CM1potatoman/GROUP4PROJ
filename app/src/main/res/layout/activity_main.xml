@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#87CEEB"
+    android:padding="16dp">
+
+    <!-- START SCREEN -->
+    <LinearLayout
+        android:id="@+id/startLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quizz of Diddy"
+            android:textSize="32sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:layout_marginBottom="32dp" />
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#000000"
+            android:text="START"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <!-- CATEGORY SELECTION SCREEN -->
+    <LinearLayout
+        android:id="@+id/categoryLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose Your Poison"
+            android:textSize="28sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:layout_marginBottom="32dp" />
+
+        <Button
+            android:id="@+id/category1Btn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#000000"
+            android:text="Section 1: General Brainrot"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/category2Btn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#000000"
+            android:text="Section 2: Umamusume Facts"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/category3Btn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#000000"
+            android:text="Section 3: Project Moon" />
+    </LinearLayout>
+
+    <!-- QUIZ SCREEN -->
+    <LinearLayout
+        android:id="@+id/quizLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/questionText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:text="Question text here?"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <!-- Row 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <Button
+                    android:id="@+id/option1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:backgroundTint="@color/kahoot_red"
+                    android:text="Option A" />
+
+                <Button
+                    android:id="@+id/option2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:backgroundTint="@color/kahoot_blue"
+                    android:text="Option B" />
+            </LinearLayout>
+
+            <!-- Row 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/option3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:backgroundTint="@color/kahoot_yellow"
+                    android:text="Option C" />
+
+                <Button
+                    android:id="@+id/option4"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:backgroundTint="@color/kahoot_green"
+                    android:text="Option D" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- RESULT SCREEN -->
+    <LinearLayout
+        android:id="@+id/resultLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/scoreText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quiz Finished!"
+            android:textColor="#000000"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/detailedScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Correct: 0 | Wrong: 0"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp" />
+
+        <Button
+            android:id="@+id/restartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#000000"
+            android:text="Play Again" />
+    </LinearLayout>
+
+</FrameLayout>
