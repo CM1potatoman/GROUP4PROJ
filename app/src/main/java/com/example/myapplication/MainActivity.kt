@@ -1,10 +1,16 @@
 package com.example.myapplication
 
+import android.graphics.Color
+import android.graphics.ImageDecoder
+import android.graphics.drawable.AnimatedImageDrawable
+import android.graphics.drawable.AnimationDrawable
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.ComponentActivity
@@ -19,6 +25,10 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
 
     lateinit var questionTextView: TextView
     lateinit var scoreResultTextView: TextView
+    lateinit var progressTextView: TextView
+    lateinit var faustImage: ImageView
+    lateinit var xiImage: ImageView
+    lateinit var spinmaelImage: ImageView
 
     lateinit var option1: Button
     lateinit var option2: Button
@@ -26,10 +36,13 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
     lateinit var option4: Button
 
     var bgm: MediaPlayer? = null
+    var menuMusic: MediaPlayer? = null
     var sfxId: Int = 0
     var tts: TextToSpeech? = null
+    
+    var isHaruMode = false
 
-    // my questions lists
+    // questions
     val generalQuestions = listOf(
         Question("Who is the strongest PDF of all time??", listOf("Diddy", "Epstein", "Manucom", "Trump"), listOf(2)),
         Question("Who wins in a eating Competition?", listOf("Jeff Regjidor", "Mortera", "Nikako Avocado", "Oguri Cap"), listOf(0)),
@@ -77,10 +90,8 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // setup tts
         tts = TextToSpeech(this, this)
 
-        // get the screens from layout
         startScreen = findViewById(R.id.startLayout)
         categoryScreen = findViewById(R.id.categoryLayout)
         quizScreen = findViewById(R.id.quizLayout)
@@ -88,43 +99,65 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
 
         questionTextView = findViewById(R.id.questionText)
         scoreResultTextView = findViewById(R.id.detailedScore)
+        progressTextView = findViewById(R.id.progressText)
+        faustImage = findViewById(R.id.faustSprite)
+        xiImage = findViewById(R.id.xiSprite)
+        spinmaelImage = findViewById(R.id.spinmaelImage)
 
-        // buttons for answers
         option1 = findViewById(R.id.option1)
         option2 = findViewById(R.id.option2)
         option3 = findViewById(R.id.option3)
         option4 = findViewById(R.id.option4)
 
-        // start button logic
+        playMenuMusic()
+        loadSpinmael()
+
+        // Juicy buttons setup
+        setupJuicyButton(findViewById(R.id.startButton))
+        
+        // Find them as View to avoid cast errors, since they are LinearLayout IDs now
+        val cat1 = findViewById<View>(R.id.category1Btn)
+        val cat2 = findViewById<View>(R.id.category2Btn)
+        val cat3 = findViewById<View>(R.id.category3Btn)
+        
+        setupJuicyView(cat1)
+        setupJuicyView(cat2)
+        setupJuicyView(cat3)
+        
+        setupJuicyButton(option1)
+        setupJuicyButton(option2)
+        setupJuicyButton(option3)
+        setupJuicyButton(option4)
+        setupJuicyButton(findViewById(R.id.restartButton))
+
         findViewById<Button>(R.id.startButton).setOnClickListener {
-            startScreen.visibility = View.GONE
-            categoryScreen.visibility = View.VISIBLE
+            startScreen.animate().alpha(0f).setDuration(300).withEndAction {
+                startScreen.visibility = View.GONE
+                startScreen.alpha = 1f
+                categoryScreen.visibility = View.VISIBLE
+                categoryScreen.alpha = 0f
+                categoryScreen.animate().alpha(1f).setDuration(300).start()
+            }.start()
         }
 
-        // choosing a category
-        findViewById<Button>(R.id.category1Btn).setOnClickListener {
-            startIt(generalQuestions, R.raw.bluearchive, R.raw.koyukiuwah)
+        cat1.setOnClickListener {
+            startQuiz(generalQuestions, R.raw.bluearchive, R.raw.koyukiuwah, false)
         }
-        findViewById<Button>(R.id.category2Btn).setOnClickListener {
-            startIt(umamusumeQuestions, R.raw.heliosrap, R.raw.wei)
+        cat2.setOnClickListener {
+            startQuiz(umamusumeQuestions, R.raw.heliosrap, R.raw.wei, true)
         }
-        findViewById<Button>(R.id.category3Btn).setOnClickListener {
-            startIt(projectMoonQuestions, R.raw.lor, R.raw.dice)
+        cat3.setOnClickListener {
+            startQuiz(projectMoonQuestions, R.raw.lor, R.raw.dice, false)
         }
 
-        // clicking answers
         option1.setOnClickListener { check(0) }
         option2.setOnClickListener { check(1) }
         option3.setOnClickListener { check(2) }
         option4.setOnClickListener { check(3) }
 
-        // retry button
         findViewById<Button>(R.id.restartButton).setOnClickListener {
-            if (bgm != null) {
-                bgm?.stop()
-                bgm?.release()
-                bgm = null
-            }
+            stopBgm()
+            playMenuMusic()
             startScreen.visibility = View.VISIBLE
             resultScreen.visibility = View.GONE
         }
@@ -136,26 +169,151 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         }
     }
 
-    fun startIt(list: List<Question>, music: Int, sound: Int) {
+    fun setupJuicyButton(button: Button) {
+        button.setOnTouchListener { view, event ->
+            when (event.action) {
+                android.view.MotionEvent.ACTION_DOWN -> {
+                    view.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100).start()
+                }
+                android.view.MotionEvent.ACTION_UP, android.view.MotionEvent.ACTION_CANCEL -> {
+                    view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                }
+            }
+            false
+        }
+    }
+
+    fun setupJuicyView(view: View) {
+        view.setOnTouchListener { v, event ->
+            when (event.action) {
+                android.view.MotionEvent.ACTION_DOWN -> {
+                    v.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100).start()
+                }
+                android.view.MotionEvent.ACTION_UP, android.view.MotionEvent.ACTION_CANCEL -> {
+                    v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                }
+            }
+            false
+        }
+    }
+
+    fun loadSpinmael() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                val source = ImageDecoder.createSource(resources, R.drawable.spinmael)
+                val drawable = ImageDecoder.decodeDrawable(source)
+                spinmaelImage.setImageDrawable(drawable)
+                if (drawable is AnimatedImageDrawable) drawable.start()
+            } catch (e: Exception) { }
+        }
+    }
+
+    fun playMenuMusic() {
+        if (menuMusic == null) {
+            menuMusic = MediaPlayer.create(this, R.raw.menu)
+            menuMusic?.isLooping = true
+            menuMusic?.setVolume(0.2f, 0.2f)
+            menuMusic?.start()
+        }
+    }
+
+    fun stopMenuMusic() {
+        menuMusic?.stop()
+        menuMusic?.release()
+        menuMusic = null
+    }
+
+    fun startQuiz(list: List<Question>, music: Int, sound: Int, haru: Boolean) {
+        stopMenuMusic()
         currentList = list.shuffled()
         qNum = 0
         score = 0
         sfxId = sound
-        
-        categoryScreen.visibility = View.GONE
+        isHaruMode = haru
+
+        // Transition Animation
+        categoryScreen.animate()
+            .translationX(-categoryScreen.width.toFloat() - 100f)
+            .alpha(0f)
+            .setDuration(500)
+            .withEndAction {
+                categoryScreen.visibility = View.GONE
+                categoryScreen.translationX = 0f
+                categoryScreen.alpha = 1f
+            }.start()
+
+        quizScreen.translationX = 1000f 
+        quizScreen.alpha = 0f
         quizScreen.visibility = View.VISIBLE
-        
-        // play the bgm
-        if (bgm != null) {
-            bgm?.stop()
-            bgm?.release()
-        }
+
+        faustImage.alpha = 0f
+        xiImage.alpha = 0f
+
+        quizScreen.animate()
+            .translationX(0f)
+            .alpha(1f)
+            .setDuration(600)
+            .withEndAction {
+                faustImage.animate().alpha(1f).setDuration(300).start()
+                xiImage.animate().alpha(1f).setDuration(300).start()
+            }
+            .start()
+
+        stopBgm()
         bgm = MediaPlayer.create(this, music)
         bgm?.isLooping = true
-        bgm?.setVolume(0.15f, 0.15f) // make it quiet
+        bgm?.setVolume(0.15f, 0.15f)
         bgm?.start()
 
+        faustImage.setImageDrawable(null)
+        faustImage.background = null
+        xiImage.setImageDrawable(null)
+        xiImage.background = null
+        xiImage.visibility = View.GONE
+
+        if (isHaruMode) {
+            faustImage.animate().rotation(0f).setDuration(0).start()
+            xiImage.animate().rotation(0f).setDuration(0).start()
+            xiImage.visibility = View.VISIBLE
+            xiImage.scaleX = -1f
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                try {
+                    val sourceH = ImageDecoder.createSource(resources, R.drawable.haru)
+                    val drawableH = ImageDecoder.decodeDrawable(sourceH)
+                    faustImage.setImageDrawable(drawableH)
+                    if (drawableH is AnimatedImageDrawable) drawableH.start()
+
+                    val sourceT = ImageDecoder.createSource(resources, R.drawable.teio)
+                    val drawableT = ImageDecoder.decodeDrawable(sourceT)
+                    xiImage.setImageDrawable(drawableT)
+                    if (drawableT is AnimatedImageDrawable) drawableT.start()
+                } catch (e: Exception) { }
+            }
+        } else {
+            xiImage.visibility = View.VISIBLE
+            xiImage.scaleX = 1f
+            faustImage.setBackgroundResource(R.drawable.faust_anim)
+            val animF = faustImage.background as AnimationDrawable
+            animF.start()
+            xiImage.setBackgroundResource(R.drawable.xi_anim)
+            val animX = xiImage.background as AnimationDrawable
+            animX.start()
+            wobbleMascots()
+        }
         next()
+    }
+
+    fun wobbleMascots() {
+        if (quizScreen.visibility != View.VISIBLE || isHaruMode) return
+        faustImage.animate().rotation(3f).setDuration(800).withEndAction {
+            faustImage.animate().rotation(-3f).setDuration(800).withEndAction {
+                if (quizScreen.visibility == View.VISIBLE && !isHaruMode) wobbleMascots()
+            }.start()
+        }.start()
+        xiImage.animate().rotation(3f).setDuration(800).withEndAction {
+            xiImage.animate().rotation(-3f).setDuration(800).start()
+        }.start()
     }
 
     fun next() {
@@ -165,15 +323,12 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         option2.text = q.options[1]
         option3.text = q.options[2]
         option4.text = q.options[3]
-
-        // make it speak
+        progressTextView.text = "Question " + (qNum + 1) + " of " + currentList.size
         tts?.speak(q.text, TextToSpeech.QUEUE_FLUSH, null, null)
     }
 
     fun check(idx: Int) {
         val q = currentList[qNum]
-
-        // play sfx
         val s = MediaPlayer.create(this, sfxId)
         s.setOnCompletionListener { it.release() }
         s.start()
@@ -181,18 +336,12 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         if (q.correctIndices.contains(idx)) {
             score = score + 1
         }
-
         qNum = qNum + 1
 
         if (qNum < currentList.size) {
             next()
         } else {
-            // finish
-            if (bgm != null) {
-                bgm?.stop()
-                bgm?.release()
-                bgm = null
-            }
+            stopBgm()
             quizScreen.visibility = View.GONE
             resultScreen.visibility = View.VISIBLE
             val res = "You got " + score + " out of " + currentList.size + " correct!"
@@ -201,9 +350,16 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         }
     }
 
+    fun stopBgm() {
+        bgm?.stop()
+        bgm?.release()
+        bgm = null
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        bgm?.release()
+        stopBgm()
+        stopMenuMusic()
         tts?.stop()
         tts?.shutdown()
     }
