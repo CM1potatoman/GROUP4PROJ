@@ -318,7 +318,7 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         stopBgm()
         bgm = MediaPlayer.create(this, music)
         bgm?.isLooping = true
-        bgm?.setVolume(0.15f, 0.15f)
+        bgm?.setVolume(0.25f, 0.25f)
         bgm?.start()
         nextQuestionMascots()
         next()
