@@ -72,7 +72,7 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
     var rhythmScore = 0
     var rhythmTimer: CountDownTimer? = null
 
-    // --- RHYTHM GAME DATA ---
+    // game data
     private var isRhythmActive = false
     private val travelTime = 2000L 
     private val activeNotes = mutableListOf<View>()
@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         noteMap.clear()
         var time = 3000L
         val endTime = 3000L + 230000L 
-        val msPerBeat = 414L // 145 BPM
+        val msPerBeat = 414L 
         
         while (time < endTime) {
             val lane = (0..3).random()
@@ -121,25 +121,44 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         }
     }
 
-    // --- QUIZ DATA ---
-    val generalQuestions = listOf(
-        Question("Who is the strongest PDF of all time??", listOf("Diddy", "Epstein", "Manucom", "Trump"), listOf(2)),
-        Question("Who wins in a eating Competition?", listOf("Jeff Regjidor", "Mortera", "Nikako Avocado", "Oguri Cap"), listOf(0)),
-        Question("What is 2 + 2?", listOf("3", "4", "5", "Idk 22?"), listOf(1, 3)),
-        Question("Strongest Sorcerers OAT!?", listOf("Goatjo", "Fraudkuna", "Yuji", "Bumta"), listOf(1)),
-        Question("What is Rhed Marcus Yang Rustia favourite pasttime??", listOf("Reading", "Writing", "Playing", "Sleeping"), listOf(0)),
-        Question("Is cereal a soup?", listOf("Yes", "No", "Maybe?", "Don't ask me"), listOf(0))
+    // quiz banks
+    val htmlCssQuestions = listOf(
+        Question("Which language is used to structure a webpage?", listOf("CSS", "Java", "HTML", "Kotlin"), listOf(2)),
+        Question("Which CSS property changes the background color?", listOf("bg-color", "background-color", "color", "font-color"), listOf(1)),
+        Question("In HTML, which tag is used to create a hyperlink?", listOf("<link>", "<a>", "<href>", "<url>"), listOf(1)),
+        Question("What does CSS mainly control?", listOf("Logic", "Database", "Design and layout", "Server"), listOf(2)),
+        Question("Which HTML tag is used to insert an image?", listOf("<image>", "<img>", "<pic>", "<src>"), listOf(1)),
+        Question("What does HTML stand for?", listOf("Hyperlinks and Text Marking", "Hyper Text Markup Language", "Home Tool Markup", "Hyper Tool Multi Language"), listOf(1)),
+        Question("Which CSS property changes the text color?", listOf("font-color", "text-style", "color", "background-color"), listOf(2)),
+        Question("Where is the correct place to link an external CSS file?", listOf("Inside the <body>", "Inside the <head>", "At the bottom", "Inside <footer>"), listOf(1)),
+        Question("How do you select an element with id='header' in CSS?", listOf(".header", "#header", "header", "*header"), listOf(1)),
+        Question("Which HTML tag is used for the largest heading?", listOf("<heading>", "<h6>", "<h1>", "<head>"), listOf(2))
     )
 
-    val umamusumeQuestions = listOf(
-        Question("Who is the 'Silent Suzuka' based on?", listOf("Silence Suzuka", "Special Week", "Gold Ship", "Rice Shower"), listOf(0)),
-        Question("Which horse girl is known for her chaotic behavior?", listOf("Grass Wonder", "El Condor Pasa", "Gold Ship", "Mejiro McQueen"), listOf(2))
+    val javaQuestions = listOf(
+        Question("Which symbol is used to end a statement in Java?", listOf(".", ",", ":", ";"), listOf(3)),
+        Question("Which keyword is used to define a class in Java?", listOf("define", "struct", "class", "object"), listOf(2)),
+        Question("Which data type stores whole numbers in Java?", listOf("String", "int", "float", "boolean"), listOf(1)),
+        Question("Which method is the entry point of a Java program?", listOf("start()", "run()", "main()", "init()"), listOf(2)),
+        Question("Which data type stores true/false in Java?", listOf("bool", "boolean", "truth", "binary"), listOf(1)),
+        Question("What does OOP stand for?", listOf("Object-Oriented Programming", "Only Object Process", "Object Operating Program", "Open Object Programming"), listOf(0)),
+        Question("Which operator is used for addition in Java?", listOf("&", "+", "*", "="), listOf(1)),
+        Question("Which keyword is used to create an object in Java?", listOf("new", "create", "make", "object"), listOf(0)),
+        Question("Which keyword is used to inherit a class in Java?", listOf("implement", "inherits", "extends", "super"), listOf(2)),
+        Question("What does JVM stand for?", listOf("Java Variable Method", "Java Virtual Machine", "Java Verified Mode", "Java Visual Model"), listOf(1))
     )
 
-    val projectMoonQuestions = listOf(
-        Question("What is the name of the AI in Lobotomy Corporation?", listOf("Angela", "Carmen", "Binah", "Gebura"), listOf(0)),
-        Question("In Library of Ruina, what do you turn guests into?", listOf("Books", "Cards", "Light", "Dust"), listOf(0)),
-        Question("Who is the Red Mist?", listOf("Gebura", "Kali", "Binah", "Roland"), listOf(0, 1))
+    val kotlinQuestions = listOf(
+        Question("Which keyword declares a variable that can change?", listOf("val", "var", "let", "const"), listOf(1)),
+        Question("Which company developed Kotlin?", listOf("Microsoft", "Apple", "Google", "JetBrains"), listOf(3)),
+        Question("Kotlin is supported for Android development by which company?", listOf("Apple", "Microsoft", "Google", "IBM"), listOf(2)),
+        Question("How do you declare a variable that cannot be changed?", listOf("var", "let", "const", "val"), listOf(3)),
+        Question("Which keyword is used to define a function in Kotlin?", listOf("fun", "function", "define", "method"), listOf(0)),
+        Question("Kotlin is interoperable with which language?", listOf("Python", "Java", "C++", "Swift"), listOf(1)),
+        Question("What is the extension of a Kotlin file?", listOf(".kt", ".java", ".ktl", ".kot"), listOf(0)),
+        Question("Which keyword is used for a 'null-safe' call in Kotlin?", listOf("?.", "!!", ":", "?:"), listOf(0)),
+        Question("How do you define a constant in Kotlin?", listOf("const val", "final", "static", "fixed"), listOf(0)),
+        Question("Which keyword is used for a string template in Kotlin?", listOf("#", "@", "$", "&"), listOf(2))
     )
 
     var currentList = listOf<Question>()
@@ -182,23 +201,17 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         playMenuMusic()
         loadSpinmael()
 
-        setupJuicyButton(findViewById(R.id.startButton))
+        setupJuicyView(findViewById(R.id.startButton))
+        setupJuicyView(findViewById(R.id.category1Btn))
+        setupJuicyView(findViewById(R.id.category2Btn))
+        setupJuicyView(findViewById(R.id.category3Btn))
+        setupJuicyView(findViewById(R.id.rhythmBtn))
         
-        val c1 = findViewById<View>(R.id.category1Btn)
-        val c2 = findViewById<View>(R.id.category2Btn)
-        val c3 = findViewById<View>(R.id.category3Btn)
-        val rBtn = findViewById<View>(R.id.rhythmBtn)
-        
-        setupJuicyView(c1)
-        setupJuicyView(c2)
-        setupJuicyView(c3)
-        setupJuicyView(rBtn)
-        
-        setupJuicyButton(option1)
-        setupJuicyButton(option2)
-        setupJuicyButton(option3)
-        setupJuicyButton(option4)
-        setupJuicyButton(findViewById(R.id.restartButton))
+        setupJuicyView(option1)
+        setupJuicyView(option2)
+        setupJuicyView(option3)
+        setupJuicyView(option4)
+        setupJuicyView(findViewById(R.id.restartButton))
 
         findViewById<Button>(R.id.startButton).setOnClickListener {
             startScreen.animate().alpha(0f).setDuration(300).withEndAction {
@@ -210,10 +223,10 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
             }.start()
         }
 
-        c1.setOnClickListener { startQuiz(generalQuestions, R.raw.bluearchive, R.raw.koyukiuwah, false) }
-        c2.setOnClickListener { startQuiz(umamusumeQuestions, R.raw.heliosrap, R.raw.wei, true) }
-        c3.setOnClickListener { startQuiz(projectMoonQuestions, R.raw.lor, R.raw.dice, false) }
-        rBtn.setOnClickListener { startRhythmGame() }
+        findViewById<View>(R.id.category1Btn).setOnClickListener { startQuiz(htmlCssQuestions, R.raw.bluearchive, R.raw.coin) }
+        findViewById<View>(R.id.category2Btn).setOnClickListener { startQuiz(javaQuestions, R.raw.consky, R.raw.coin) }
+        findViewById<View>(R.id.category3Btn).setOnClickListener { startQuiz(kotlinQuestions, R.raw.pixel, R.raw.coin) }
+        findViewById<View>(R.id.rhythmBtn).setOnClickListener { startRhythmGame() }
 
         findViewById<Button>(R.id.restartButton).setOnClickListener {
             stopBgm()
@@ -257,16 +270,6 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         }
     }
 
-    fun setupJuicyButton(button: Button) {
-        button.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> v.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100).start()
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
-            }
-            false
-        }
-    }
-
     fun setupJuicyView(view: View) {
         view.setOnTouchListener { v, event ->
             when (event.action) {
@@ -303,13 +306,13 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         menuMusic = null
     }
 
-    fun startQuiz(list: List<Question>, music: Int, sound: Int, haru: Boolean) {
+    // quiz part
+    fun startQuiz(list: List<Question>, music: Int, sound: Int) {
         stopMenuMusic()
         currentList = list.shuffled()
         qNum = 0
         score = 0
         sfxId = sound
-        isHaruMode = haru
         categoryScreen.visibility = View.GONE
         quizScreen.visibility = View.VISIBLE
         stopBgm()
@@ -317,23 +320,28 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         bgm?.isLooping = true
         bgm?.setVolume(0.15f, 0.15f)
         bgm?.start()
-        
+        nextQuestionMascots()
+        next()
+    }
+
+    fun nextQuestionMascots() {
+        // clear old stuff
         faustImage.setImageDrawable(null)
+        faustImage.background = null
         xiImage.setImageDrawable(null)
+        xiImage.background = null
         
-        if (isHaruMode) {
-            xiImage.scaleX = -1f
-            loadGif(R.drawable.haru, faustImage)
-            loadGif(R.drawable.teio, xiImage)
+        // 50/50 for Jov vs Limbus
+        if ((0..1).random() == 1) {
+            faustImage.setImageResource(R.drawable.jov1)
+            xiImage.setImageResource(R.drawable.jov2)
         } else {
-            xiImage.scaleX = 1f
             faustImage.setBackgroundResource(R.drawable.faust_anim)
             (faustImage.background as AnimationDrawable).start()
             xiImage.setBackgroundResource(R.drawable.xi_anim)
             (xiImage.background as AnimationDrawable).start()
-            wobbleMascots()
         }
-        next()
+        wobbleMascots()
     }
 
     fun next() {
@@ -351,10 +359,13 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
     fun check(idx: Int) {
         if (qNum >= currentList.size) return
         val q = currentList[qNum]
-        playSfx(sfxId)
+        val s = MediaPlayer.create(this, sfxId); s.setOnCompletionListener { it.release() }; s.start()
         if (q.correctIndices.contains(idx)) score++
         qNum++
-        if (qNum < currentList.size) next() else endQuiz()
+        if (qNum < currentList.size) {
+            nextQuestionMascots() // change mascots per question
+            next()
+        } else endQuiz()
     }
 
     private fun endQuiz() {
@@ -365,7 +376,7 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
     }
 
     fun wobbleMascots() {
-        if (quizScreen.visibility != View.VISIBLE || isHaruMode) return
+        if (quizScreen.visibility != View.VISIBLE) return
         faustImage.animate().rotation(3f).setDuration(800).withEndAction {
             faustImage.animate().rotation(-3f).setDuration(800).withEndAction { if (quizScreen.visibility == View.VISIBLE) wobbleMascots() }.start()
         }.start()
@@ -374,17 +385,17 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         }.start()
     }
 
+    // rhythm part
     fun startRhythmGame() {
         stopMenuMusic()
         isRhythmActive = true
         categoryScreen.visibility = View.GONE
         rhythmLayout.visibility = View.VISIBLE
         rhythmScore = 0
-        updateScore()
+        rhythmScoreText.text = "Score: 0"
         generateSongMap()
         stopBgm()
-        bgm = MediaPlayer.create(this, R.raw.childrenofthecity)
-        bgm?.start()
+        bgm = MediaPlayer.create(this, R.raw.childrenofthecity); bgm?.start()
         rhythmTimer = object : CountDownTimer(230000, 1000) { 
             override fun onTick(ms: Long) { rhythmTimerText.text = String.format("%d:%02d", ms/60000, (ms%60000)/1000) }
             override fun onFinish() { endRhythmGame() }
@@ -396,36 +407,25 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         override fun run() {
             if (!isRhythmActive || bgm == null) return
             val curTime = bgm!!.currentPosition.toLong()
-            
             noteMap.forEach { note ->
                 if (!note.spawned && curTime >= note.time - travelTime) {
-                    note.spawned = true
-                    spawnFallingArrow(note)
+                    note.spawned = true; spawnFallingArrow(note)
                 }
-                
                 if (!note.judged && curTime > note.time + 200) {
-                    note.judged = true
-                    showJudgment("MISS", Color.RED)
-                    val penalty = if (note.isHold) 420 else 150
-                    rhythmScore = (rhythmScore - penalty).coerceAtLeast(0)
-                    updateScore()
+                    note.judged = true; showJudgment("MISS", Color.RED)
+                    rhythmScore = (rhythmScore - (if (note.isHold) 420 else 150)).coerceAtLeast(0)
+                    rhythmScoreText.text = "Score: $rhythmScore"
                 }
-
                 if (note.isHold && note.isBeingHeld) {
                     if (curTime > note.time + note.duration) {
-                        note.isBeingHeld = false; note.judged = true
-                        rhythmScore += 500; showJudgment("FINISHED!", Color.CYAN)
-                        updateScore()
+                        note.isBeingHeld = false; note.judged = true; rhythmScore += 250; showJudgment("FINISHED!", Color.CYAN)
                     } else if (!isHolding[note.lane]) {
-                        note.isBeingHeld = false; note.judged = true
-                        showJudgment("RELEASE", Color.LTGRAY); rhythmScore += 250; updateScore()
-                    } else {
-                        rhythmScore += 3; updateScore()
-                    }
+                        note.isBeingHeld = false; note.judged = true; showJudgment("GOOD", Color.LTGRAY); rhythmScore += 100
+                    } else { rhythmScore += 3 }
+                    rhythmScoreText.text = "Score: $rhythmScore"
                 }
             }
-            if (bgm!!.isPlaying) handler.postDelayed(this, 16)
-            else endRhythmGame()
+            if (bgm!!.isPlaying) handler.postDelayed(this, 16) else endRhythmGame()
         }
     }
 
@@ -435,11 +435,9 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         val container = FrameLayout(this)
         val tailHeight = if (note.isHold) (note.duration * (rhythmLayout.height / travelTime.toFloat())) else 0f
         val containerHeight = (baseSize + tailHeight).toInt()
-        
-        val params = FrameLayout.LayoutParams(baseSize, containerHeight)
-        params.leftMargin = ((rhythmLayout.width / 4) * note.lane) + ((rhythmLayout.width / 8) - (baseSize / 2))
-        container.layoutParams = params
-
+        container.layoutParams = FrameLayout.LayoutParams(baseSize, containerHeight).apply {
+            leftMargin = ((rhythmLayout.width / 4) * note.lane) + ((rhythmLayout.width / 8) - (baseSize / 2))
+        }
         if (note.isHold) {
             val tail = View(this).apply {
                 layoutParams = FrameLayout.LayoutParams((baseSize * 0.45f).toInt(), tailHeight.toInt()).apply { gravity = 1; topMargin = baseSize / 2 }
@@ -448,15 +446,11 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
             }
             container.addView(tail)
         }
-
         val arrow = ImageView(this).apply {
             setImageResource(when(note.lane) { 0 -> R.drawable.ic_arrow_left; 1 -> R.drawable.ic_arrow_down; 2 -> R.drawable.ic_arrow_up; else -> R.drawable.ic_arrow_right })
             layoutParams = FrameLayout.LayoutParams(baseSize, baseSize)
         }
-        container.addView(arrow)
-        noteLaneLayout.addView(container)
-        container.tag = note
-        activeNotes.add(container)
+        container.addView(arrow); noteLaneLayout.addView(container); container.tag = note; activeNotes.add(container)
         container.translationY = -containerHeight.toFloat()
         container.animate().translationY(rhythmLayout.height.toFloat()).setDuration(travelTime + 500).setInterpolator(null)
             .withEndAction { noteLaneLayout.removeView(container); activeNotes.remove(container) }.start()
@@ -465,26 +459,30 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
     fun checkHit(lane: Int) {
         val curTime = bgm?.currentPosition?.toLong() ?: 0
         val hitView = activeNotes.filter { (it.tag as RhythmNote).lane == lane && !(it.tag as RhythmNote).judged }
-            .minByOrNull { abs((it.tag as RhythmNote).time - curTime) } ?: return
-
+            .minByOrNull { abs((it.tag as RhythmNote).time - curTime) } ?: run {
+                rhythmScore = (rhythmScore - 150).coerceAtLeast(0)
+                rhythmScoreText.text = "Score: $rhythmScore"
+                return
+            }
         val note = hitView.tag as RhythmNote
         val diff = abs(note.time - curTime)
-        if (diff > 250) return
-
-        if (note.isHold) {
-            note.isBeingHeld = true
-            hitView.alpha = 0.4f
-            showJudgment("HOLD!", Color.YELLOW)
-        } else {
+        if (diff > 250) {
+            rhythmScore = (rhythmScore - 150).coerceAtLeast(0) 
+            rhythmScoreText.text = "Score: $rhythmScore"
+            return
+        }
+        if (note.isHold) { note.isBeingHeld = true; hitView.alpha = 0.4f; showJudgment("HOLD!", Color.YELLOW) }
+        else {
             note.judged = true
             when {
-                diff < 80 -> { rhythmScore += 100; showJudgment("PERFECT", Color.CYAN) }
-                diff < 160 -> { rhythmScore += 50; showJudgment("GOOD", Color.YELLOW) }
-                else -> { rhythmScore += 25; showJudgment("BAD", Color.MAGENTA) }
+                diff < 80 -> { rhythmScore += 250; showJudgment("PERFECT", Color.CYAN) }
+                diff < 140 -> { rhythmScore += 150; showJudgment("GREAT", Color.GREEN) }
+                diff < 200 -> { rhythmScore += 100; showJudgment("GOOD", Color.YELLOW) }
+                else -> { rhythmScore += 75; showJudgment("BAD", Color.MAGENTA) }
             }
             noteLaneLayout.removeView(hitView); activeNotes.remove(hitView)
         }
-        updateScore()
+        rhythmScoreText.text = "Score: $rhythmScore"
     }
 
     fun showJudgment(t: String, c: Int) {
@@ -494,13 +492,11 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
     }
 
     fun updateScore() { rhythmScoreText.text = "Score: $rhythmScore" }
-    fun endRhythmGame() { isRhythmActive = false; rhythmTimer?.cancel(); rhythmLayout.visibility = View.GONE; resultScreen.visibility = View.VISIBLE; scoreResultTextView.text = "Finished! Final Score: $rhythmScore" }
+    fun endRhythmGame() { isRhythmActive = false; rhythmTimer?.cancel(); rhythmLayout.visibility = View.GONE; resultScreen.visibility = View.VISIBLE; scoreResultTextView.text = "Finished! Score: $rhythmScore" }
     fun stopBgm() { bgm?.stop(); bgm?.release(); bgm = null }
-    fun playSfx(id: Int) { val s = MediaPlayer.create(this, id); s.setOnCompletionListener { it.release() }; s.start() }
-    fun loadGif(id: Int, v: ImageView) { if (Build.VERSION.SDK_INT >= 28) { val s = ImageDecoder.createSource(resources, id); val d = ImageDecoder.decodeDrawable(s); v.setImageDrawable(d); if (d is AnimatedImageDrawable) d.start() } }
     override fun onPause() { super.onPause(); bgm?.pause(); menuMusic?.pause() }
-    override fun onResume() { super.onResume(); if (isRhythmActive || quizScreen.visibility == View.VISIBLE) bgm?.start() else playMenuMusic() }
+    override fun onResume() { super.onResume(); if (isRhythmActive) bgm?.start() else playMenuMusic() }
     override fun onDestroy() { super.onDestroy(); stopBgm(); stopMenuMusic(); tts?.shutdown() }
 }
 
-data class Question(val text: String, val options: List<String>, val correctIndices: List<Int>)
+class Question(val text: String, val options: List<String>, val correctIndices: List<Int>)

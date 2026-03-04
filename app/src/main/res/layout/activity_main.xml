@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quizz of Diddy"
+            android:text="Group 4 Quizz"
             android:textSize="32sp"
             android:textColor="#000000"
             android:textStyle="bold"
@@ -50,7 +50,7 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <!-- CATEGORY SELECTION SCREEN -->
+    <!-- CATEGORY SELECTION SCREEN (Limbus ID Style) -->
     <LinearLayout
         android:id="@+id/categoryLayout"
         android:layout_width="match_parent"
@@ -62,13 +62,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose Your Poison"
+            android:text="Choose Your Section"
             android:textSize="28sp"
             android:textColor="#000000"
             android:textStyle="bold"
             android:layout_marginBottom="32dp" />
 
-        <!-- ID Card 1 -->
+        <!-- HTML/CSS Card -->
         <LinearLayout
             android:id="@+id/category1Btn"
             android:layout_width="280dp"
@@ -81,10 +81,11 @@
             android:focusable="true">
 
             <ImageView
+                android:id="@+id/cat1Icon"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:scaleType="fitCenter"
-                android:src="@drawable/stiers" />
+                android:src="@drawable/css" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -95,21 +96,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Refraction Railway 1"
+                    android:text="Section 1"
                     android:textColor="#0000FF"
                     android:textSize="10sp"
                     android:textStyle="bold" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="General Brainrot"
+                    android:text="HTML/CSS"
                     android:textColor="#000000"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- ID Card 2 -->
+        <!-- JAVA Card -->
         <LinearLayout
             android:id="@+id/category2Btn"
             android:layout_width="280dp"
@@ -122,10 +123,11 @@
             android:focusable="true">
 
             <ImageView
+                android:id="@+id/cat2Icon"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:scaleType="fitCenter"
-                android:src="@drawable/umasym" />
+                android:src="@drawable/javimg" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -136,21 +138,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Refraction Railway 2"
+                    android:text="Section 2"
                     android:textColor="#0000FF"
                     android:textSize="10sp"
                     android:textStyle="bold" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Umamusume Facts"
+                    android:text="JAVA"
                     android:textColor="#000000"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- ID Card 3 -->
+        <!-- KOTLIN Card -->
         <LinearLayout
             android:id="@+id/category3Btn"
             android:layout_width="280dp"
@@ -158,15 +160,15 @@
             android:background="@drawable/id_card_bg"
             android:orientation="horizontal"
             android:padding="8dp"
-            android:layout_marginBottom="16dp"
             android:clickable="true"
             android:focusable="true">
 
             <ImageView
+                android:id="@+id/cat3Icon"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:scaleType="fitCenter"
-                android:src="@drawable/projmoon" />
+                android:src="@drawable/kotpng" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -177,14 +179,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Refraction Railway 3"
+                    android:text="Section 3"
                     android:textColor="#0000FF"
                     android:textSize="10sp"
                     android:textStyle="bold" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Project Moon"
+                    android:text="KOTLIN"
                     android:textColor="#000000"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -199,6 +201,7 @@
             android:background="@drawable/id_card_bg"
             android:orientation="horizontal"
             android:padding="8dp"
+            android:layout_marginTop="16dp"
             android:clickable="true"
             android:focusable="true">
 
@@ -325,6 +328,7 @@
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
+            <!-- faust stays in the right corner -->
             <ImageView
                 android:id="@+id/faustSprite"
                 android:layout_width="70dp"
@@ -333,6 +337,7 @@
                 android:layout_alignParentEnd="true"
                 android:scaleType="fitCenter" />
 
+            <!-- xi stays in the left corner -->
             <ImageView
                 android:id="@+id/xiSprite"
                 android:layout_width="70dp"
